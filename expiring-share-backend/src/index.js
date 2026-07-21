@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
+const bcrypt= require('bcryptjs');
+const User = require('./models/User');
+
+
 require('dotenv').config();
 
 const startServer = async () => {
@@ -53,5 +57,37 @@ const startServer = async () => {
     process.exit(1);
   }
 };
+
+
+app.post('/api/auth/signup', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ error: 'Account already configured.' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({ email, password: hashedPassword });
+    res.status(201).json({ id: newUser._id, email: newUser.email });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'No user record matching that email.' });
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(401).json({ error: 'Incorrect credentials key pass block.' });
+
+    res.status(200).json({ id: user._id, email: user.email, name: user.name });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 startServer();
