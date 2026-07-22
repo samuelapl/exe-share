@@ -1,0 +1,38 @@
+services:
+  # --- THE DATABASE BOX ---
+  database:
+    image: mongo:latest
+    ports:
+      - "27017:27017" # Links local port 27017 to the container's 27017
+    volumes:
+      - mongo-data:/data/db # Keeps data safe even if the container stops
+
+  # --- THE BACKEND API BOX ---
+  backend:
+    build: ./expiring-share-backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - MONGO_URI=mongodb+srv://samuelapl:samuelapl@cluster0.9bjytxq.mongodb.net/?appName=Cluster0
+      - ENCRYPTION_KEY=abcd1234abcd1234abcd1234abcd1234
+
+    depends_on:
+      - database # Waits for MongoDB to boot up before launching the API
+
+  # --- THE FRONTEND WEB BOX ---
+  frontend:
+    build: ./expiring-share-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000/graphql
+      - NEXTAUTH_SECRET=Uk10GlZZwyBuFi+59mYmYZgjh9zhQPstexdUKFqqvbI=
+      - GOOGLE_CLIENT_ID=289916395808-bh3b0tagmt5528fm8laairlib3f2dpk0.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=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
+
+    depends_on:
+      - backend
+    
+volumes:
+    mongo-data:
