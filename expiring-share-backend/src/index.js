@@ -11,8 +11,13 @@ const User = require('./models/User');
 
 
 require('dotenv').config();
+ 
 
   const app = express();
+    // Middleware pipeline stack configuration
+    app.use(cors());
+    app.use(express.json());
+
 
 const startServer = async () => {
   const PORT = process.env.PORT || 4000;
