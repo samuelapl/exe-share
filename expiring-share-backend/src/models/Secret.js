@@ -7,8 +7,9 @@ const secretSchema = new mongoose.Schema({
   authTag: { type: String, required: true },
   maxViews: { type: Number, required: true, default: 1 },
   viewCount: { type: Number, required: true, default: 0 },
+  isDestroyed: { type: Boolean, default: false },
   expiresAt: { type: Date, required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+   userId: { type: String, required: true } 
 });
 
 // Native MongoDB TTL Index: This automatically wipes out expired rows from your DB

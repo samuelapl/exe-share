@@ -12,8 +12,9 @@ const User = require('./models/User');
 
 require('dotenv').config();
 
-const startServer = async () => {
   const app = express();
+
+const startServer = async () => {
   const PORT = process.env.PORT || 4000;
 
   try {

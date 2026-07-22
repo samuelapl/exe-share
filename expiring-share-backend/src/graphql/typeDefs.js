@@ -7,8 +7,19 @@ const typeDefs = `#graphql
     urlCode: String!
   }
 
+    type SecretLog {
+    id: ID!
+    urlCode: String!
+    maxViews: Int!
+    viewCount: Int!
+    expiresAt: String!
+    createdAt: String!
+    isDestroyed: Boolean!
+  }
+
   type Query {
     revealSecret(urlCode: String!): SecretPayload!
+    getUserLogs(userId: ID!): [SecretLog!]!
   }
 
   type Mutation {
@@ -16,7 +27,10 @@ const typeDefs = `#graphql
       plainTextContent: String!, 
       expirationMinutes: Int!, 
       allowedViews: Int!
+      userId: ID!
     ): ShortLink!
+
+    revokeSecret(urlCode: String!): Boolean!
   }
 `;
 
