@@ -17,7 +17,7 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         // Call your Express backend API to check credentials
-        const res = await fetch("http://localhost:4000/api/auth/login", {
+        const res = await fetch("https://exe-share-backend.onrender.com/api/auth/login", {
           method: 'POST',
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" }

@@ -26,7 +26,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:4000/graphql
+      - NEXT_PUBLIC_API_URL=https://exe-share-backend.onrender.com/graphql
       - NEXTAUTH_SECRET=Uk10GlZZwyBuFi+59mYmYZgjh9zhQPstexdUKFqqvbI=
       - GOOGLE_CLIENT_ID=289916395808-bh3b0tagmt5528fm8laairlib3f2dpk0.apps.googleusercontent.com
       - GOOGLE_CLIENT_SECRET=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

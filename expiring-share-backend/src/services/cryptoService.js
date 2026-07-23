@@ -4,20 +4,18 @@ require('dotenv').config();
 const ALGORITHM = 'aes-256-gcm';
 const KEY = Buffer.from(process.env.ENCRYPTION_KEY, 'utf8');
 
-// Ensure key length is exactly 32 bytes
 if (KEY.length !== 32) {
   throw new Error('Critical: ENCRYPTION_KEY in .env must be exactly 32 bytes/characters long.');
 }
 
 function encrypt(text) {
-  // IV must be unique for every encryption action
+  
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(ALGORITHM, KEY, iv);
   
   let encrypted = cipher.update(text, 'utf8', 'hex');
   encrypted += cipher.final('hex');
-  
-  // GCM mode outputs an authTag to verify data integrity upon decryption
+
   const authTag = cipher.getAuthTag().toString('hex');
   
   return {

@@ -7,7 +7,7 @@ RUN npm install
 
 COPY . .
 
-ENV NEXT_PUBLIC_API_URL=http://localhost:4000/graphql
+ENV NEXT_PUBLIC_API_URL=https://exe-share-backend.onrender.com/graphql
 
 RUN npm run build
 
